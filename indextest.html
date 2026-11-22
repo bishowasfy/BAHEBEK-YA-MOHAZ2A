@@ -27,30 +27,63 @@
     .music-row{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}.small{font:12px Arial,sans-serif;color:var(--muted);line-height:1.6}.footer{text-align:center;padding:35px 10px 55px;color:var(--muted);font-size:14px}
     .sparkle{position:absolute;opacity:.45;color:var(--rose);font-size:22px}.s1{top:17%;left:12%}.s2{right:12%;top:25%}.s3{bottom:17%;right:18%}
 
-    /* Lockdown Screen Styles */
+    /* Lockdown & Password Screen Styles */
     #lockdown-screen{position:fixed;inset:0;background:linear-gradient(145deg,#fff7f8,#ffe5eb 55%,#fff7f4);color:var(--ink);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
     #lockdown-screen:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.23;background-image:radial-gradient(#d94f70 1px,transparent 1px);background-size:25px 25px;z-index:-1}
     .lock-card{background:var(--card);border:1px solid #fff;border-radius:28px;padding:clamp(28px,5vw,48px);box-shadow:0 16px 48px #8e234214;backdrop-filter:blur(10px);max-width:540px;width:100%}
     .lock-title{font-size:clamp(2rem,5vw,3rem);font-weight:normal;color:var(--deep);margin:12px 0}
     .lock-sub{color:var(--muted);font-size:1.05rem;line-height:1.7;margin:0 0 24px}
 
+    /* Password Box Styles */
+    .pass-form{display:flex;flex-direction:column;gap:12px;max-width:320px;margin:20px auto 12px}
+    .pass-input{width:100%;padding:14px 18px;border-radius:999px;border:1px solid #f0bdca;background:#fff;color:var(--ink);font:15px Arial,sans-serif;text-align:center;outline:none;transition:.2s}
+    .pass-input:focus{border-color:var(--rose);box-shadow:0 0 0 3px #d94f7022}
+    .pass-error{color:var(--rose);font:bold 13px Arial,sans-serif;letter-spacing:.08em;min-height:20px;margin:6px 0 0}
+    .pass-hint{background:#fff9fa;border:1px dashed #f0bdca;border-radius:14px;padding:10px 14px;margin-top:16px;font:13px Arial,sans-serif;color:var(--muted);line-height:1.5}
+    .pass-hint strong{color:var(--deep)}
+    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+    .shake{animation:shake .3s ease-in-out}
+
     @media(max-width:650px){.gallery{grid-template-columns:1fr}.photo{min-height:260px}.hero{min-height:85vh}.timebox{min-width:68px}.timebox strong{font-size:1.6rem}}
   </style>
 </head>
 <body>
-  <!-- Countdown Lockdown Overlay -->
+  <!-- Countdown & Password Lockdown Overlay -->
   <div id="lockdown-screen">
-    <div class="lock-card">
-      <div class="eyebrow">not yet ya batotyy ♡</div>
-      <h2 class="lock-title">Locked Until Your Day 🔒</h2>
-      <p class="lock-sub">Estany l7d m el wa2t ye5ls😝😝</p>
-      <div class="countdown" aria-live="polite">
-        <div class="timebox"><strong id="lock-days">—</strong><span>Days</span></div>
-        <div class="timebox"><strong id="lock-hours">—</strong><span>Hours</span></div>
-        <div class="timebox"><strong id="lock-minutes">—</strong><span>Minutes</span></div>
-        <div class="timebox"><strong id="lock-seconds">—</strong><span>Seconds</span></div>
+    <div class="lock-card" id="lock-card">
+      
+      <!-- STAGE 1: Countdown View -->
+      <div id="countdown-stage">
+        <div class="eyebrow">not yet ya batotyy ♡</div>
+        <h2 class="lock-title">Locked Until Your Day 🔒</h2>
+        <p class="lock-sub">Estany l7d m el wa2t ye5ls😝😝</p>
+        <div class="countdown" aria-live="polite">
+          <div class="timebox"><strong id="lock-days">—</strong><span>Days</span></div>
+          <div class="timebox"><strong id="lock-hours">—</strong><span>Hours</span></div>
+          <div class="timebox"><strong id="lock-minutes">—</strong><span>Minutes</span></div>
+          <div class="timebox"><strong id="lock-seconds">—</strong><span>Seconds</span></div>
+        </div>
+        <p class="small">December 25, 2026 • 12:00 AM</p>
       </div>
-      <p class="small">December 25, 2026 • 12:00 AM (Egypt Time)</p>
+
+      <!-- STAGE 2: Password View (Appears when timer finishes) -->
+      <div id="password-stage" style="display:none">
+        <div class="eyebrow">it's finally your day ♡</div>
+        <h2 class="lock-title">One Last Step 🔑</h2>
+        <p class="lock-sub">Ektby el password 3shan teft7y el mafag2a ya batotyy</p>
+        
+        <form class="pass-form" id="pass-form">
+          <input type="password" id="pass-input" class="pass-input" placeholder="Enter password..." autocomplete="off" required>
+          <button type="submit" class="button">Unlock ♡</button>
+        </form>
+
+        <div class="pass-error" id="pass-error" aria-live="polite"></div>
+
+        <div class="pass-hint">
+          <strong>Hint:</strong> <span id="hint-text">Put your hint here</span>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -82,17 +115,26 @@
         <div class="envelope">💌</div>
         <p id="letterTeaser">EFT7Y EL NOTE DY LEEKY ENTY BAS </p>
         <button class="button" id="openLetter">دوسيني هنا تاني</button>
-        <div class="letter" id="letterText">Hey LOLO, my love,
+        <div class="letter" id="letterText">Happy birthday to my one and only person ❤️❤️
 
-I made this little corner of the internet just for you, because I wanted you to have something you can open whenever you need a reminder of how special you are to me.
+25/12 will always be more than just a date to me , It’s the day the most beautiful person in my life was born, the day we became us, and the day I got one of the best things that ever happened to me
 
-Thank you for the laughs, the conversations, the random little moments, and all the memories that mean more to me than I can explain. You make ordinary days feel a little more beautiful just by being part of them.
+I don’t think words will ever be enough to explain how happy I am that you’re in my life
+ I’m grateful for every laugh, every little moment, every memory, and even the simplest conversations we share
+You are not just a girlfriend you are my friend ,my backbone,my comfort zone,my inner peace(not exactly but anyways),my other half,my opposite gender(as i said from the very first time),my soulmate and last but not least MY WHOLE WORLD  
 
-If I could give you one thing, it would be the chance to see yourself through my eyes for a moment — so you could understand how much happiness you bring into my life.
+If I could go back in time, I’d choose you all over again, without a second thought. I hope this year brings you all the happiness your heart deserves, because there’s genuinely no one I’d wish it for more
 
-This page is only a tiny gift, but every part of it was made with you in mind. Here's to more memories, more laughs, more songs, and more chapters in our story.
+You can’t understand or imagine how i thank GOD everyday that he let me see and love and talk to a person like you, 
+Words can’t describe how much is my love towards you, and how much i fear i get of just a thought that i can lose you and i how i truly love you,
+That every part of me loves every piece and every atom of you, to more and more memories and i hope we can make a lot of stories in our lives to tell our kids about
 
-I love you, LOLO. Always remember that you are loved. ♡
+Happy birthday ya ro7 alby 
+Here’s to another year of you, me, and all the beautiful memories we’re yet to make
+
+I love you more than you know ya batotaa bgd❤️❤️❤️
+
+Two celebrations, one date, and one person I'll always be grateful for (YOU🫵🏼🫀) ♡
 
 <span class="letter-sign">— Yours, always</span></div>
       </div>
@@ -103,7 +145,7 @@ I love you, LOLO. Always remember that you are loved. ♡
       <p class="sub">Lw m3rftesh tgawby teb2y 3abeta (enty 3abeta kda kda)</p>
       <div class="card quiz">
         <div class="eyebrow" id="quizProgress">QUESTION 1 OF 3</div>
-        <div class="question" id="question">Which kind of day would I pick with you?</div>
+        <div class="question" id="question">When was the day we held hands?</div>
         <div class="answers" id="answers"></div>
         <div class="feedback" id="feedback" aria-live="polite"></div>
         <button class="button secondary" id="nextQuestion" style="display:none">Next question →</button>
@@ -138,29 +180,48 @@ I love you, LOLO. Always remember that you are loved. ♡
   <script src="script.js"></script>
   <script>
     (function() {
-      // Unlocks at 12:00 AM (Midnight) Dec 25, 2026 — Egypt Time (UTC+2)
+      // ==========================================
+      // 1. CUSTOMIZE YOUR SETTINGS HERE:
+      // ==========================================
       const unlockDate = new Date("2026-12-25T00:00:00+02:00").getTime();
-      const secretKey = "bishoy";
+      const sitePassword = "2512"; // <--- CHANGE THIS to the password she needs to type
+      const passwordHint = "Our special date (DDMM) ♡"; // <--- CHANGE THIS to your hint
+      const secretPreviewKey = "bishoy"; // Bypass using ?preview=bishoy
+      // ==========================================
 
       const lockScreen = document.getElementById("lockdown-screen");
+      const lockCard = document.getElementById("lock-card");
+      const countdownStage = document.getElementById("countdown-stage");
+      const passwordStage = document.getElementById("password-stage");
+      const passForm = document.getElementById("pass-form");
+      const passInput = document.getElementById("pass-input");
+      const passError = document.getElementById("pass-error");
+      const hintText = document.getElementById("hint-text");
+
+      hintText.textContent = passwordHint;
+
       const urlParams = new URLSearchParams(window.location.search);
 
       // Instant bypass for you: add ?preview=bishoy to your URL
-      if (urlParams.get("preview") === secretKey) {
+      if (urlParams.get("preview") === secretPreviewKey) {
         lockScreen.style.display = "none";
         return;
       }
 
       document.body.style.overflow = "hidden";
 
+      function showPasswordStage() {
+        countdownStage.style.display = "none";
+        passwordStage.style.display = "block";
+      }
+
       function updateLockdown() {
         const now = new Date().getTime();
         const distance = unlockDate - now;
 
         if (distance <= 0) {
-          lockScreen.style.display = "none";
-          document.body.style.overflow = "auto";
           clearInterval(timerInterval);
+          showPasswordStage();
           return;
         }
 
@@ -169,6 +230,23 @@ I love you, LOLO. Always remember that you are loved. ♡
         document.getElementById("lock-minutes").textContent = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         document.getElementById("lock-seconds").textContent = Math.floor((distance % (1000 * 60)) / 1000);
       }
+
+      // Handle password submission
+      passForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+        // Compares trimmed input (case-insensitive so capital letters don't trip her up)
+        if (passInput.value.trim().toLowerCase() === sitePassword.trim().toLowerCase()) {
+          lockScreen.style.display = "none";
+          document.body.style.overflow = "auto";
+        } else {
+          passError.textContent = FAKARY SHOAYA;
+          passInput.value = "";
+          passInput.focus();
+          lockCard.classList.remove("shake");
+          void lockCard.offsetWidth; // trigger reflow to restart shake animation
+          lockCard.classList.add("shake");
+        }
+      });
 
       updateLockdown();
       const timerInterval = setInterval(updateLockdown, 1000);
