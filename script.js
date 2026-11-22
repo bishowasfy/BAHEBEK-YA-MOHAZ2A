@@ -1,8 +1,8 @@
 // ========================================================
 // LOLO'S WEBSITE — PERSONAL SETTINGS
 // ========================================================
-const HER_NAME = "LOLO";
-const COUNTDOWN_TITLE = "Counting down to Christmas with you ♡";
+const HER_NAME = "MY BUBBLES🤏";
+const COUNTDOWN_TITLE = "Counting down to your birthday with you ♡";
 const SPECIAL_DATE = "2026-12-25T00:00:00+02:00"; // Egypt Time (UTC+2)
 const PREVIEW_KEY = "bishoy"; // Use ?preview=bishoy to bypass the lock anytime
 
@@ -10,22 +10,22 @@ const PREVIEW_KEY = "bishoy"; // Use ?preview=bishoy to bypass the lock anytime
 // "correct" must match one of the answers exactly.
 const QUIZ = [
   {
-    question: "What's my favorite kind of time to spend with you?",
-    answers: ["Making little memories together", "Ignoring each other", "Doing absolutely nothing together"],
-    correct: "Making little memories together",
-    message: "Even the simplest moments with you become special. ♡"
+    question: "When was the day we held hands?",
+    answers: ["11/10", "10/10", "9/10"],
+    correct: "10/10",
+    message: "Eh el shataraa dyy ♡♡"
   },
   {
-    question: "What makes our relationship feel like ours?",
-    answers: ["Our inside jokes and little moments", "Never talking", "Trying to be strangers"],
-    correct: "Our inside jokes and little moments",
-    message: "Nobody else could make our little world quite like we do. 💗"
+    question: "Eh hoa aktr wa2t bnb2a m7tagen b3d feeh?",
+    answers: ["Lma bnshof tt m3 b3d", "Lma bnb2a bara", "Lma bnb2a met5an2en"],
+    correct: "Lma bnb2a met5an2en",
+    message: "Kda kda bab2a m7tagek tol el wa2t 7ata lw eh 💗"
   },
   {
-    question: "What do I want more of with you?",
-    answers: ["More memories, laughs, and adventures", "Less happiness", "Fewer conversations"],
-    correct: "More memories, laughs, and adventures",
-    message: "There's still so much more of our story to write. ♡"
+    question: "Which day we added back each other on snap ?",
+    answers: ["5/3", "6/3", "7/3"],
+    correct: "5/3",
+    message: "There's still so much more of our story to write 💗💗"
   }
 ];
 
@@ -60,7 +60,7 @@ function renderQuestion() {
     button.addEventListener("click", () => {
       [...answers.children].forEach(b => b.disabled = true);
       document.getElementById("feedback").textContent =
-        answer === q.correct ? q.message : "Not quite — but you still get all my love. ♡";
+        answer === q.correct ? q.message : "8ALATT!!! ETFDLY FAKARY TANYY!! ";
       document.getElementById("nextQuestion").style.display = "inline-block";
     });
     answers.appendChild(button);
@@ -70,9 +70,9 @@ document.getElementById("nextQuestion").addEventListener("click", () => {
   quizIndex++;
   if (quizIndex >= QUIZ.length) {
     document.getElementById("quizProgress").textContent = "QUIZ COMPLETE ♡";
-    document.getElementById("question").textContent = "You made it to the end!";
+    document.getElementById("question").textContent = "SHATOORAA LOLOO";
     document.getElementById("answers").innerHTML = "";
-    document.getElementById("feedback").textContent = "Your prize: a reminder that you are loved more than this little quiz can say. 💗";
+    document.getElementById("feedback").textContent = "Your prize: wala 7aga 3shan el mfrod tkony 3arfahom asln";
     document.getElementById("nextQuestion").style.display = "none";
   } else renderQuestion();
 });
